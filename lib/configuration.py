@@ -11,6 +11,7 @@ import shutil
 import random
 import fnmatch
 
+from collections import OrderedDict
 from utils import logger, tools
 from torch.utils.data import DataLoader
 from utils.image_utils import occ_to_mask
@@ -157,6 +158,7 @@ def configure_model_and_loss(args):
 
         # ----------------------------------------------------
         # Model
+        # TODO: this part of code should: models = RAFT model.
         # ----------------------------------------------------
         kwargs = tools.kwargs_from_args(args, "model")
         kwargs["args"] = args
@@ -313,7 +315,12 @@ class CheckpointSaver:
         # -----------------------------------------------------------------------------------------
         # Load filtered state dictionary
         # -----------------------------------------------------------------------------------------
-        state_dict = checkpoint_with_state[self._model_key]
+        if not type(checkpoint_with_state) == OrderedDict:
+            # Load ordered dict in weird way. Support for IRR.
+            state_dict = checkpoint_with_state[self._model_key]
+        else:
+            # Load ordered dict in normal way. Support for RAFT.
+            state_dict = checkpoint_with_state
         restore_keys = tools.filter_list_of_strings(
             state_dict.keys(),
             include=include_params,
