@@ -1,3 +1,7 @@
+# RAFT model args
+small: false
+
+# ScopeFlow Args
 aug_max_zoom: 1.3
 aug_max_zoom_rel: 1.015
 aug_min_zoom: 0.8
@@ -5,7 +9,7 @@ aug_min_zoom_rel: 0.985
 aug_rotate: 0.2
 aug_trans: 0.2
 bilateral_mask: 0
-checkpoint: checkpoints/Sintel_comb_train
+checkpoint: checkpoints/RAFT/sintel.pth
 checkpoint_exclude_params:
 - ''
 checkpoint_include_params:
@@ -24,7 +28,7 @@ lr_scheduler_milestones:
 - 687
 - 720
 - 770
-model: IRR_PWC_V2
+model: raft # RAFT model
 model_div_flow: 0.05
 name: run
 num_iters: 1
